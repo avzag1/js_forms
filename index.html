@@ -5,11 +5,12 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="shortcut icon" href="#" />
+    <link rel="stylesheet" href="./main.css" />
     <title>Домашнее задание - занятие 5</title>
   </head>
   <body>
     <h1>Для задания 1</h1>
-    <div class="task1"> 
+    <div class="task1">
       <table id="table1">
         <tr>
           <th>Имя</th>
@@ -35,31 +36,101 @@
       <div>
         <form id="form1">
           <div>
-            <input value="" placeholder="Имя" id="form1-name">
+            <input value="" placeholder="Имя" id="form1-name" />
           </div>
           <div>
-            <input value="" placeholder="Отдел" id="form1-department">
+            <input value="" placeholder="Отдел" id="form1-department" />
           </div>
           <div>
-            <input value="" placeholder="Возраст" id="form1-age">
+            <input value="" placeholder="Возраст" id="form1-age" />
           </div>
           <div>
-            <input type="button" value="Добавить новую строку" id="form1-btn">
+            <input type="submit" value="Добавить новую строку" id="form1-btn" />
           </div>
         </form>
       </div>
     </div>
     <script>
-      // 1. Написать функцию для сортировки таблицы #table1 по столбцу "Имя". 
+      // 1. Написать функцию для сортировки таблицы #table1 по столбцу "Имя".
       // В таблице может быть больше строк.
       // Функцию сортировки необходимо вызывать при клике на столбце "Имя".
       // Один клик на столбце, сортировка по алфавиту, второй клик, в обратном порядке.
       // Также, можете добавить CSS стили на свое усмотрение.
-      // *2. Напишите функцию для добавления строк в таблицу из формы. Новые строки должны тоже учавствовать в сортировке.
-      // *3. Добавьте возможность удаления строк из таблицы. Это не должно как-то влиять на сортировку.
+
+      document.addEventListener("DOMContentLoaded", function () {
+        let table = document.getElementById("table1");
+
+        let nameRow = table.rows[0].cells[0];
+        nameRow.addEventListener("click", sort);
+        function sort() {
+          let sortedRows = Array.from(table.rows)
+            .splice(1)
+            .sort((a, b) => (a > b ? 1 : -1)); //Почему новые строки не участвуют в сортировке?
+          //  .sort((a, b) => {return a.value.localeCompare(b.value)}); В чем ошибка применения localeCompare?
+          table.tBodies[0].append(...sortedRows);
+        }
+
+        table.classList.add("table");
+        document.getElementsByTagName("form")[0].classList.add("form");
+        inputAll = document.getElementsByTagName("input");
+        for (let item of inputAll) {
+          item.classList.add("input");
+        }
+        trAll = document.getElementsByTagName("td");
+        for (let item of trAll) {
+          item.classList.add("td");
+        }
+
+        // *2. Напишите функцию для добавления строк в таблицу из формы.
+        //Новые строки должны тоже учавствовать в сортировке.
+
+        let form = document.getElementById("form1");
+        // let btn1 = document.getElementById("form1-btn");
+
+        form.addEventListener("submit", (event) => {
+          event.preventDefault();
+          addRow();
+          // console.log(table);
+        });
+
+        table.addEventListener("dblclick", (event) => {
+          let item = event.target;
+          if (item.tagName !== "TD") {
+            return;
+          }
+          console.log(item.parentElement);
+          item.parentElement.remove();
+        });
+
+        function addRow() {
+          let tbody = document
+            .getElementById("table1")
+            .getElementsByTagName("tbody")[0];
+          let row = document.createElement("tr");
+          let td1 = document.createElement("td");
+          td1.appendChild(
+            document.createTextNode(form.querySelector("#form1-name").value)
+          );
+          let td2 = document.createElement("td");
+          td2.appendChild(
+            document.createTextNode(
+              form.querySelector("#form1-department").value
+            )
+          );
+          let td3 = document.createElement("td");
+          td3.appendChild(
+            document.createTextNode(form.querySelector("#form1-age").value)
+          );
+          row.appendChild(td1);
+          row.appendChild(td2);
+          row.appendChild(td3);
+          tbody.appendChild(row);
+        }
+      });
+      // *3. Добавьте возможность удаления строк из таблицы.
+      //Это не должно как-то влиять на сортировку.
       // Решение:
 
-      
       // Пример:
       // let sort1 = [1, 20, -3, 4].sort((a, b) => {
       //   if(a > b) {
@@ -85,9 +156,7 @@
     </script>
 
     <h1>Для задания 2</h1>
-    <div class="task3" id="calendar">
-
-    </div>
+    <div class="task3" id="calendar"></div>
     <div id="task3-form">
       <form id="form2">
         <!-- Добавьте необходимые поля формы -->
@@ -97,20 +166,20 @@
       .task3 table {
         border-collapse: collapse;
       }
-  
+
       .task3 td,
       .task3 th {
         border: 1px solid black;
         padding: 3px;
         text-align: center;
       }
-  
+
       .task3 th {
         background-color: orange;
         font-weight: bold;
       }
 
-      task3 td.red {
+      .task3 td.red {
         background-color: red;
       }
     </style>
@@ -119,18 +188,20 @@
       // Напишите функцию newCalendar(elementLink, year, month).
 
       // Вызов функции newCalendar() создаст календарь для заданного месяца month в году year и вставить его внутрь elementLink.
-      // Календарь должен быть в виде таблицы (тег table), где неделя – это <tr>, а день – это <td>. 
+      // Календарь должен быть в виде таблицы (тег table), где неделя – это <tr>, а день – это <td>.
       // У таблицы должен быть заголовок с названиями дней недели, каждый день – <th>.
       // Первый день недели в календаре - понедельник.
       // *Если выбран текущий месяц, подсветите красным текущий день на календаре.
       // Пример вызова функции: newCalendar(elementLink, 2022, 1) сгенерирует календарь calendar.png
 
       // Расширенное задание для занятия №5
-      // 1. *Создайте форму с помощью которой можно будет создавать календарь для любого месяца
+      // 1. *Создайте форму с помощью которой можно будет создавать
+      //календарь для любого месяца
       // 2. *Добавьте кнопку для построения календаря за текущий месяц
 
       // Подсказки
-      let year = 2022, month = 1;
+      let year = 2022,
+        month = 1;
       let date = new Date(year, month - 1); // Создание объекта Date для месяца month в году year (номерация начинается с 0)
       let day = date.getDay(); // Получение номера дня недели
       console.log(day);
@@ -144,8 +215,83 @@
       console.log(day);
 
       // Решение:
+      function newCalendar(elementLink, year, month) {
+        let date = new Date(year, month - 1); // Создание объекта Date для месяца month в году year (номерация начинается с 0)
+        let currentDate = new Date();
+        // console.log(date);
+        // console.log(currentDate);
+        // console.log(date.getMonth());
+        // console.log(getDay(date));
+        let table =
+          "<table><tr><th>пн</th><th>вт</th><th>ср</th><th>чт</th><th>пт</th><th>сб</th><th>вс</th></tr>"; //Создал шапку с днями недели
+        for (let i = 0; i < getDay(date); i++) {
+          table += "<td></td>"; // пробелы первого ряда
+        }
+
+        while (date.getMonth() == month - 1) {
+          //table += "<td>" + date.getDate() + "</td>"; // Заполнение ячеек с датами
+
+          if (
+            currentDate.getFullYear() === year &&
+            currentDate.getMonth() === month - 1 &&
+            currentDate.getDate() === date.getDate() 
+          ) {
+            table += "<td class = 'red'>" + date.getDate() + "</td>";
+          } else {
+            table += "<td>" + date.getDate() + "</td>";
+          }
+          if (getDay(date) % 7 == 6) {
+            // вс - последний день. Перевод строки.
+            table += "</tr><tr>";
+          }
+          date.setDate(date.getDate() + 1);
+        }
+        if (getDay(date) != 0) {
+          for (let i = getDay(date); i < 7; i++) {
+            table += "<td></td>"; //Пустые ячейки в конце месяца
+          }
+        }
+        table += "</tr></table>"; // закрытие таблицы
+
+        elementLink.innerHTML = table;
+      }
+
+      function getDay(date) {
+        // получить номер дня недели, от 0 (пн) до 6 (вс)
+        let day = date.getDay();
+        if (day == 0) day = 7; // сделать воскресенье (0) последним днем
+        return day - 1;
+      }
+      newCalendar(calendar, 2023, 9);
+    </script>
+    <form id="form2">
+      <input value="" placeholder="Введите год" id="form2-year" />
+      <input value="" placeholder="Введите месяц" id="form2-month"">
+      <input type="submit" value="Сформировать календарь" id="form2-btn" />
+    </form>
+
+    <button id="btn2" style="margin-top: 10px">Календарь на этот месяц</button>
+    <script>
+      let calendarForm = document.getElementById("form2");
+      calendarForm.addEventListener("submit", (event) => { //Почему не срабатывает calendarForm.addEventListener?
+        event.preventDefault();
+        newCalendar(
+          calendar,
+          calendarForm.querySelector("#form2-year").value,
+          calendarForm.querySelector("#form2-month").value
+        );
+      });
 
 
+      btnCalc = document.getElementById("btn2");
+      btnCalc.addEventListener("click", () => {
+        let currentDate = new Date();
+        newCalendar(
+          calendar,
+          currentDate.getFullYear(),
+          currentDate.getMonth() + 1
+        );
+      });
     </script>
   </body>
 </html>
