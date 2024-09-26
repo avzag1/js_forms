@@ -65,18 +65,21 @@
         function sort() {
           let sortedRows = Array.from(table.rows)
             .splice(1)
-            .sort((a, b) => (a > b ? 1 : -1)); //Почему новые строки не участвуют в сортировке?
-          //  .sort((a, b) => {return a.value.localeCompare(b.value)}); В чем ошибка применения localeCompare?
+            .sort((a, b) => {
+              const aText = a.cells[0].textContent.trim(); // Берем текст из первой ячейки (столбец "Имя")
+              const bText = b.cells[0].textContent.trim();
+              return aText.localeCompare(bText); // Сравниваем строки);
+            });
           table.tBodies[0].append(...sortedRows);
         }
 
         table.classList.add("table");
         document.getElementsByTagName("form")[0].classList.add("form");
-        inputAll = document.getElementsByTagName("input");
+        const inputAll = document.getElementsByTagName("input");
         for (let item of inputAll) {
           item.classList.add("input");
         }
-        trAll = document.getElementsByTagName("td");
+        const trAll = document.getElementsByTagName("td");
         for (let item of trAll) {
           item.classList.add("td");
         }
@@ -234,7 +237,7 @@
           if (
             currentDate.getFullYear() === year &&
             currentDate.getMonth() === month - 1 &&
-            currentDate.getDate() === date.getDate() 
+            currentDate.getDate() === date.getDate()
           ) {
             table += "<td class = 'red'>" + date.getDate() + "</td>";
           } else {
@@ -264,26 +267,26 @@
       }
       newCalendar(calendar, 2023, 9);
     </script>
-    <form id="form2">
-      <input value="" placeholder="Введите год" id="form2-year" />
-      <input value="" placeholder="Введите месяц" id="form2-month"">
-      <input type="submit" value="Сформировать календарь" id="form2-btn" />
+    <form id="form3">
+      <input value="" placeholder="Введите год" id="form3-year" />
+      <input value="" placeholder="Введите месяц" id="form3-month"">
+      <input type="submit" value="Сформировать календарь" id="form3-btn" />
     </form>
 
     <button id="btn2" style="margin-top: 10px">Календарь на этот месяц</button>
     <script>
-      let calendarForm = document.getElementById("form2");
-      calendarForm.addEventListener("submit", (event) => { //Почему не срабатывает calendarForm.addEventListener?
+      const calendarForm = document.getElementById("form3");
+      calendarForm.addEventListener("submit", (event) => {
+        //Почему не срабатывает calendarForm.addEventListener?
         event.preventDefault();
         newCalendar(
           calendar,
-          calendarForm.querySelector("#form2-year").value,
-          calendarForm.querySelector("#form2-month").value
+          calendarForm.querySelector("#form3-year").value,
+          calendarForm.querySelector("#form3-month").value
         );
       });
 
-
-      btnCalc = document.getElementById("btn2");
+      const btnCalc = document.getElementById("btn2");
       btnCalc.addEventListener("click", () => {
         let currentDate = new Date();
         newCalendar(
