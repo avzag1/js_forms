@@ -233,15 +233,22 @@
 
         while (date.getMonth() == month - 1) {
           //table += "<td>" + date.getDate() + "</td>"; // Заполнение ячеек с датами
-
+          // console.log(currentDate.getFullYear());
+          // console.log(year);
+          // console.log(currentDate.getMonth());
+          // console.log(month - 1);
+          // console.log(currentDate.getDate());
+          // console.log(date.getDate());
           if (
             currentDate.getFullYear() === year &&
             currentDate.getMonth() === month - 1 &&
             currentDate.getDate() === date.getDate()
           ) {
             table += "<td class = 'red'>" + date.getDate() + "</td>";
+          
           } else {
             table += "<td>" + date.getDate() + "</td>";
+
           }
           if (getDay(date) % 7 == 6) {
             // вс - последний день. Перевод строки.
@@ -284,6 +291,9 @@
           calendarForm.querySelector("#form3-year").value,
           calendarForm.querySelector("#form3-month").value
         );
+        // console.log(calendarForm.querySelector("#form3-year").value);
+        // console.log(calendarForm.querySelector("#form3-month").value);
+        // console.log(currentDate.getMonth());
       });
 
       const btnCalc = document.getElementById("btn2");
@@ -294,6 +304,7 @@
           currentDate.getFullYear(),
           currentDate.getMonth() + 1
         );
+        
       });
     </script>
   </body>
