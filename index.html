@@ -219,6 +219,8 @@
 
       // Решение:
       function newCalendar(elementLink, year, month) {
+        year = parseInt(year)
+        month = parseInt(month)
         let date = new Date(year, month - 1); // Создание объекта Date для месяца month в году year (номерация начинается с 0)
         let currentDate = new Date();
         // console.log(date);
